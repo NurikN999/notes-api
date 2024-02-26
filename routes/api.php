@@ -20,6 +20,11 @@ Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login'])->name('login');
 
 Route::group(['middleware' => 'jwt.auth'], function () {
-    Route::get('/notes', [NoteController::class, 'index']);
-    Route::post('/notes', [NoteController::class, 'store']);
+    Route::prefix('/notes')->group(function () {
+        Route::get('', [NoteController::class, 'index']);
+        Route::post('', [NoteController::class, 'store']);
+        Route::get('/{note}', [NoteController::class, 'show']);
+        Route::put('/{note}', [NoteController::class, 'update']);
+        Route::delete('/{note}', [NoteController::class, 'destroy']);
+    });
 });
